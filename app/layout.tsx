@@ -9,7 +9,7 @@ export default function RootLayout({
     }) {
       return (
         <html lang="en">
-          <body>
+          <body className="border h-screen flex flex-col justify-between">
             <Header />
             {children}
             <Footer />
