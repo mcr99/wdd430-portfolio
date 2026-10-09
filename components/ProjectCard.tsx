@@ -1,5 +1,3 @@
-import { deleteProject } from '@/lib/actions';
-
 interface ProjectCardProps {
   id: number;
   title: string;
@@ -23,9 +21,6 @@ export default function ProjectCard({ id, title, description, technologies, link
           <a href={link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">View Project</a>
         </p>
       )}
-      <form action={deleteProject.bind(null, id)} className="mt-4">
-        <button type="submit" className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700" >Delete</button>
-      </form>
     </article>
   );
 }

@@ -2,6 +2,7 @@ import Pagination from '@/components/Pagination';
 import ProjectList from '@/components/ProjectList';
 import ProjectSearch from '@/components/ProjectSearch';
 import { fetchFilteredProjects, fetchProjectsPages, } from '@/lib/projects-db';
+import type { Metadata } from 'next';
 
 interface ProjectsPageProps {
   searchParams?: Promise<{
@@ -35,3 +36,9 @@ export default async function ProjectsPage({
     </main>
   );
 }
+
+export const metadata: Metadata = {
+  title: 'Projects Overview',
+  description:
+    'Explore my web development projects, including applications built with React, JavaScript, and other technologies.',
+};

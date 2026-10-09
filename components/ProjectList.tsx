@@ -8,12 +8,11 @@ interface Project {
   link?: string;
 }
 
-
 interface ProjectListProps {
   projects: Project[];
 }
 
-export default function ProjectList({ projects }: ProjectListProps) {
+export default function ProjectList({ projects, }: ProjectListProps) {
   return (
     <section className="grid gap-4 md:grid-cols-2">
       {projects.map((project) => (
@@ -22,4 +21,3 @@ export default function ProjectList({ projects }: ProjectListProps) {
     </section>
   );
 }
-

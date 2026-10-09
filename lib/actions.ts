@@ -4,6 +4,34 @@ import { sql } from '@vercel/postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { z } from 'zod';
+import { signIn } from '@/auth';
+import { AuthError } from 'next-auth';
+import { auth } from '@/auth';
+
+export async function authenticate(
+  prevState: string | undefined,
+  formData: FormData,
+) {
+  try {
+    await signIn('credentials', formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case 'CredentialsSignin':
+          return 'Invalid email or password.';
+        default:
+          return 'Something went wrong.';
+      }
+    }
+    throw error; // re-throw so Next.js handles redirects correctly
+  }
+}
+
+async function requireOwnerSession() {
+  const session = await auth();
+  if (!session?.user) throw new Error('Not authenticated');
+  return session;
+}
 
 const ProjectFormSchema = z.object({
   title: z.string().min(2),
@@ -26,6 +54,7 @@ export type State = {
 
 
 export async function createProject( prevState: State, formData: FormData): Promise<State> {
+  await requireOwnerSession();
   const raw = {
     title: formData.get('title'),
     description: formData.get('description'),
@@ -84,6 +113,7 @@ export async function updateProject(
   id: number,
   formData: FormData
 ) {
+  await requireOwnerSession();
   const raw = {
     title: formData.get('title'),
     description: formData.get('description'),
@@ -127,6 +157,7 @@ export async function updateProject(
 }
 
 export async function deleteProject(id: number) {
+  await requireOwnerSession();
   try {
     await sql`
       DELETE FROM projects

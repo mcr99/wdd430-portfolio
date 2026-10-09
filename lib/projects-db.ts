@@ -76,3 +76,30 @@ export async function fetchProjectsPages(query: string): Promise<number> {
 
   return Math.ceil(rows[0].count / ITEMS_PER_PAGE);
 }
+
+export async function getUserByEmail(email: string) {
+  const { rows } = await sql<{
+    id: number;
+    name: string | null;
+    email: string;
+    passwordHash: string;
+  }>`
+    SELECT
+      id,
+      name,
+      email,
+      password_hash AS "passwordHash"
+    FROM users
+    WHERE email = ${email}
+    LIMIT 1
+  `;
+
+  const user = rows[0];
+
+  if (!user) return null;
+
+  return {
+    ...user,
+    id: String(user.id),
+  };
+}

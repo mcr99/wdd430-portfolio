@@ -1,4 +1,12 @@
 import ProjectList from '@/components/ProjectList';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'My Portfolio',
+  description:
+    'Welcome to my web development portfolio. Explore my projects built with JavaScript, React, Next.js, and other technologies.',
+};
+
 const projects = [
   {
     id: 1,
